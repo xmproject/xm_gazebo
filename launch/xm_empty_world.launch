@@ -1,0 +1,27 @@
+<launch>
+  <arg name="debug" default="false"/>
+  <arg name="gui" default="true"/>
+
+  <include
+    file="$(find gazebo_ros)/launch/empty_world.launch">
+	<arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="headless" value="false"/>
+  </include>
+
+  <!--include 
+	file="$(find xm_control)/launch/xm_controller.launch" >
+  </include-->
+
+  <param name="robot_description" command="$(find xacro)/xacro.py $(find xm_description)/urdf/xm_gazebo.xacro" />  
+
+  <node
+    name="spawn_model"
+    pkg="gazebo_ros"
+    type="spawn_model"
+    args="-urdf -x 0 -y 0 -z 0 -J joint_lift 0 -J joint_waist 0 -J joint_big_arm 0 -J joint_forearm 0 -J joint_wrist_pitching 0 -J joint_wrist_rotation 0 -model xm_robot -param robot_description"
+    respawn="false"
+    output="screen" />
+</launch>
